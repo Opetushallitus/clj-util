@@ -19,4 +19,4 @@
   (cl/get uri :cl (cassableclient @current-client cp)))
 
 (defn post [cp uri body]
-  (cl/post uri bosy :cl (cassableclient @current-client cp)))
+  (cl/post uri body :cl (cassableclient @current-client cp)))
