@@ -101,5 +101,10 @@
 (defn get [url & options]
   (run-request (req {:url url }) options))
 
+
+(defn parse-content-type [mt st]
+  (.apply (org.http4s.headers.Content$minusType$/MODULE$) (org.http4s.MediaType/fromKey (scala.Tuple2. mt st))))
+
 (defn post [url body & options]
-  (run-request (.withBody (req {:method :post :url url}) body utf-encoder) options))
+  (let [{:keys [content-type] :or {content-type ["text" "plain"] }} (apply hash-map options)]
+    (run-request (.withBody (req {:method :post :url url}) body (.withContentType utf-encoder (apply parse-content-type content-type)) ) options)))
