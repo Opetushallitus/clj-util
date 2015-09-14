@@ -16,7 +16,7 @@
     (swap! current-client (constantly cc))))
 
 (defn get [cp uri & options]
-  (apply (partial cl/get uri :cl (cassableclient @current-client cp)) options))
+  ((partial apply cl/get uri :cl (cassableclient @current-client cp)) options))
 
 (defn post [cp uri body & options]
-  (apply (partial cl/post uri body :cl (cassableclient @current-client cp))  options))
+  ((partial apply cl/post uri body :cl (cassableclient @current-client cp)) options))
