@@ -1,4 +1,4 @@
-(defproject oph/clj-parent "0.1.0-SNAPSHOT"
+(defproject oph/clj-parent "0.1.0"
   :url "http://example.com/FIXME"
   :license {:name "EUPL"
             :url  "http://www.osor.eu/eupl/"}
