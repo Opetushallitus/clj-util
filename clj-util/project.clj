@@ -1,4 +1,4 @@
-(defproject oph/clj-util "0.1.0"
+(defproject oph/clj-util "0.2.0-SNAPSHOT"
   :description "oph clojure utilities"
   :url "http://example.com/FIXME"
   :license {:name "EUPL"
