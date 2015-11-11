@@ -5,8 +5,6 @@
   :plugins [[lein-modules "0.3.11"]]
   :modules {:inherited {
                         :repositories        [["oph-releases" {:url "https://artifactory.oph.ware.fi/artifactory/oph-sade-release-local"
+                                                               :sign-releases false
                                                                :snapshots false}]
-                                              ["oph-snapshots" "https://artifactory.oph.ware.fi/artifactory/oph-sade-snapshot-local"]]
-                        :deploy-repositories {"snapshots" {:url "https://artifactory.oph.ware.fi/artifactory/oph-sade-snapshot-local"}
-                                              "releases"  {:url "https://artifactory.oph.ware.fi/artifactory/oph-sade-release-local"}
-                                                           :sign-releases false}}})
+                                              ["oph-snapshots" "https://artifactory.oph.ware.fi/artifactory/oph-sade-snapshot-local"]]}})
