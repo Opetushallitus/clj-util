@@ -1,6 +1,6 @@
-(ns clj-util.cas
+(ns clj-cas.cas
   (:refer-clojure :exclude [get])
-  (:require [clj-util.client :as cl])
+  (:require [clj-cas.client :as cl])
   (:import [fi.vm.sade.utils.cas CasAuthenticatingClient CasClient CasParams]))
 
 (defn cas-params [uri user passwd] (CasParams/apply uri user passwd))

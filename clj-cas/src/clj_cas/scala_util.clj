@@ -1,4 +1,4 @@
-(ns clj-util.scala-util)
+(ns clj-cas.scala-util)
 
 
 (defn sfn0 [f]
