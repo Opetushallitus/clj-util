@@ -8,4 +8,5 @@
             :dependencies [[org.clojure/tools.logging "0.4.0"]
                            [clj-time "0.14.2"]
                            [cheshire "5.8.0"]
-                           [environ "1.1.0"]])
+                           [environ "1.1.0"]
+                           [slingshot "0.12.2"]])
