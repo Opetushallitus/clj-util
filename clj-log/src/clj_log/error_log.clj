@@ -3,7 +3,7 @@
       [clj-log.access-headers :refer :all]
       [clj-time.core :as t]
       [cheshire.core :as c]
-      [environ.core :as env]))
+      [environ.core :refer [env]]))
 
 (def ^{:private true} logger (impl/get-logger (impl/find-factory) "error-log"))
 
