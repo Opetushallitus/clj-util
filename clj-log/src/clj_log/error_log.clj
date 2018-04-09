@@ -1,7 +1,9 @@
 (ns clj-log.error-log
     (:require [clojure.tools.logging.impl :as impl]
-              [environ.core :refer [env]]
               [slingshot.slingshot :refer [try+]]))
+
+(declare test)
+(declare verbose)
 
 (defmacro with-error-logging-value
           [value & body]
@@ -10,8 +12,8 @@
              (catch [:status 500] {:keys [~'trace-redirects]}
                (.error (impl/get-logger (impl/find-factory) *ns*) "HTTP 500 from:" ~'trace-redirects))
              (catch Object ~'_
-               (if (Boolean/valueOf (:test ~env))
-                 (if (Boolean/valueOf (:verbose ~env))
+               (if test
+                 (if verbose
                    (.error (impl/get-logger (impl/find-factory) *ns*) "Error during test:" (:throwable ~'&throw-context))
                    (.info (impl/get-logger (impl/find-factory) *ns*) "Error during test:" (:message ~'&throw-context)))
                  (.error (impl/get-logger (impl/find-factory) *ns*) "Error:" (:throwable ~'&throw-context)))

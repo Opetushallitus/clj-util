@@ -2,12 +2,13 @@
     (:require [clojure.tools.logging.impl :as impl]
       [clj-log.access-headers :refer :all]
       [clj-time.core :as t]
-      [cheshire.core :as c]
-      [environ.core :refer [env]]))
+      [cheshire.core :as c]))
 
-(def ^{:private true} logger (impl/get-logger (impl/find-factory) "ACCESS"))
+(declare service)
 
-(defn parse-access-headers [service start request response]
+(def ^{:private true} logger (impl/get-logger (impl/find-factory) "access-log"))
+
+(defn parse-access-headers [start request response]
       (let [duration (- (System/currentTimeMillis) start)
             method (get-method-from-request request)
             path-info (request :uri)]
@@ -21,17 +22,11 @@
             :requestMethod method
             :responseTime  (str duration)}))
 
-(defn log-access
-      ([service start request response]
-        (.info logger (c/generate-string (parse-access-headers service start request response))))
-      ([start request response]
-        (log-access (:service-name ~env) start request response)))
+(defn log-access [start request response]
+  (.info logger (c/generate-string (parse-access-headers start request response))))
 
-(defmacro with-access-logging [service request & operations]
+(defmacro with-access-logging [request & operations]
           `(let [start# (System/currentTimeMillis)
                  response# ~(cons 'do operations)]
-                (log-access ~service start# ~request response#)
+                (log-access start# ~request response#)
                 response#))
-
-(defmacro with-access-logging-env [request & operations]
-          `(with-access-logging (:service-name ~env) ~request ~@operations))
