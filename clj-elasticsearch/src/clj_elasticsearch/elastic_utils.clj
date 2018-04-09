@@ -2,6 +2,8 @@
     (:require [clj-http.client :as http]
               [cheshire.core :as json]))
 
+(declare elastic-host)
+
 (defonce timeout 120000)
 
 (defn index-name
@@ -13,11 +15,11 @@
       (clojure.string/join "," (flatten [name-or-names])))
 
 (defn elastic-url
-      ([elastic-host index]
+      ([index]
         (str elastic-host "/" index))
-      ([elastic-host index mapping-type]
+      ([index mapping-type]
         (str elastic-host "/" index "/" mapping-type))
-      ([elastic-host index mapping-type operation]
+      ([index mapping-type operation]
         (str elastic-host "/" index "/" mapping-type "/" operation )))
 
 (defn json-request [body] {:body (if (instance? String body) body (json/encode body)) :content-type :json :socket-timeout timeout})
