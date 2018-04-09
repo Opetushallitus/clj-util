@@ -3,6 +3,8 @@
               [clj-http.client :as http]
               [cheshire.core :as json]))
 
+(declare elastic-host)
+
 (defn get-cluster-health [host]
       (elastic-get-as-json (str host "/_cluster/health")))
 
@@ -34,9 +36,9 @@
 
 (defn parse-search-result [res] (map :_source (get-in res [:hits :hits])))
 
-(defn get-document [host index mapping-type id] ;TODO URL encoding
+(defn get-document [index mapping-type id] ;TODO URL encoding
       (try
-        (elastic-get (elastic-url host index mapping-type id))
+        (elastic-get (elastic-url elastic-host index mapping-type id))
         (catch Exception e
           (if (= 404 ((ex-data e) :status)) {:found false} (throw e)))))
 
