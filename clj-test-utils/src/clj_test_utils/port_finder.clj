@@ -1,4 +1,4 @@
-(ns clj-s3.free-port
+(ns clj-test-utils.port-finder
     (:import (java.io IOException)
       (java.net Socket)))
 

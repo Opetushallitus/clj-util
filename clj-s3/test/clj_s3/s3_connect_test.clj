@@ -1,36 +1,15 @@
 (ns clj-s3.s3-connect-test
     (:require [clojure.test :refer :all]
               [clj-s3.s3-connect :as s3]
-              [clj-s3.free-port :refer [find-free-local-port]]
+              [clj-test-utils.s3-mock-utils :refer :all]
               [base64-clj.core :as b64])
     (:import (io.findify.s3mock S3Mock)
       (com.amazonaws.client.builder AwsClientBuilder$EndpointConfiguration)
       (com.amazonaws.services.s3 AmazonS3ClientBuilder)
       (com.amazonaws.auth AWSStaticCredentialsProvider AnonymousAWSCredentials)
-      (com.amazonaws.services.s3.model CreateBucketRequest)
-      (java.io IOException)
-      (java.net Socket)))
+      (com.amazonaws.services.s3.model CreateBucketRequest)))
 
 (defonce koulutus-oid "1.2.3.4.567")
-
-(intern 'clj-s3.s3-connect 's3-region "eu-west-1")
-(intern 'clj-s3.s3-connect 's3-bucket "buketti")
-
-(defn mock-s3-fixture [f]
-      (let [port (find-free-local-port)
-            mock (S3Mock/create port)
-            s3-url (str "http://localhost:" port)]
-           (.start mock)
-           (let [endpoint-config (new AwsClientBuilder$EndpointConfiguration s3-url, s3/s3-region)
-                 client (-> (AmazonS3ClientBuilder/standard)
-                            (.withPathStyleAccessEnabled true)
-                            (.withEndpointConfiguration endpoint-config)
-                            (.withCredentials (new AWSStaticCredentialsProvider (new AnonymousAWSCredentials)))
-                            (.build))]
-                (reset! s3/s3-client client)
-                (.createBucket @s3/s3-client (new CreateBucketRequest s3/s3-bucket s3/s3-region)))
-           (f)
-           (.stop mock)))
 
 (use-fixtures :once mock-s3-fixture)
 
