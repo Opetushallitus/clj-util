@@ -12,5 +12,6 @@
                                               ["snapshots" {:url "https://artifactory.opintopolku.fi/artifactory/oph-sade-snapshot-local"
                                                             :username :env/artifactory_username
                                                             :password :env/artifactory_password
-                                                            :snapshots true}]]}
+                                                            :snapshots true}]]
+                        :dependencies [[org.clojure/clojure "1.8.0"]]}
             :subprocess "../lein"})
