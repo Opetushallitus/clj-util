@@ -6,7 +6,7 @@
 
 (declare service)
 
-(def ^{:private true} logger (impl/get-logger (impl/find-factory) "access-log"))
+(def ^{:private true} logger (impl/get-logger (impl/find-factory) "ACCESS"))
 
 (defn parse-access-headers [start request response]
       (let [duration (- (System/currentTimeMillis) start)
