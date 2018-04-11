@@ -47,10 +47,15 @@
        (testing "list documents in specific language"
              (is (= 2 (count (s3/list-keys "koulutus" koulutus-oid "kieli_fi")))))
 
-       (testing "download document"
+       (testing "download document by path parts"
              (let [doc (s3/download "moi.txt" "koulutus" koulutus-oid "kieli_fi")]
                 (is (= "moi" (slurp (:stream doc))))
                 (is (= "text/plain" (:content-type doc)))))
+
+       (testing "download document by key"
+            (let [doc (s3/download (str "koulutus/" koulutus-oid "/kieli_fi/terve.txt"))]
+                 (is (= "terve" (slurp (:stream doc))))
+                 (is (= "text/plain" (:content-type doc)))))
 
        (testing "delete documents"
              (let [resp (s3/list-keys "koulutus" koulutus-oid)]

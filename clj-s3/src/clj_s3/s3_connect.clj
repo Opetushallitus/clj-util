@@ -42,15 +42,16 @@
 
 (defn- get-object [key] (.getObject @s3-client s3-bucket key))
 
-(defn download [filename & path-parts]
-      (let [key (apply gen-key filename path-parts)
-            s3-object (get-object key)
-            s3-metadata (.getObjectMetadata s3-object)]
-           { :stream (.getObjectContent s3-object)
-             :content-type (.getContentType s3-metadata)
-             :content-length (.getContentLength s3-metadata)
-             :content-encoding (.getContentEncoding s3-metadata)
-             :key key }))
+(defn download
+  ([key]
+    (let [s3-object (get-object key)
+          s3-metadata (.getObjectMetadata s3-object)]
+         { :stream (.getObjectContent s3-object)
+          :content-type (.getContentType s3-metadata)
+          :content-length (.getContentLength s3-metadata)
+          :content-encoding (.getContentEncoding s3-metadata)
+          :key key }))
+  ([filename & path-parts] (download (apply gen-key filename path-parts))))
 
 
 
