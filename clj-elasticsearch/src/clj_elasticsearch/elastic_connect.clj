@@ -4,7 +4,7 @@
               [cheshire.core :as json]))
 
 (defn get-cluster-health []
-      (elastic-get-as-json (str elastic-host "/_cluster/health")))
+      (elastic-get-response (str elastic-host "/_cluster/health")))
 
 (defn check-elastic-status []
       (-> (get-cluster-health)
@@ -13,7 +13,7 @@
 
 (defn get-indices-info
       []
-      (-> (elastic-get-as-json (str elastic-host "/_cat/indices?v&format=json"))
+      (-> (elastic-get-response (str elastic-host "/_cat/indices?v&format=json"))
           :body))
 
 (defn get-elastic-status

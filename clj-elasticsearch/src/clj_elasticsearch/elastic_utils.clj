@@ -51,6 +51,9 @@
             (:body)
             (json/decode true))))
 
+(defn elastic-get-response
+      [url] (http/get url {:socket-timeout timeout :as :json}))
+
 ;MAX request payload size in AWS ElasticSearch
 (defonce max-payload-size 10485760)
 
