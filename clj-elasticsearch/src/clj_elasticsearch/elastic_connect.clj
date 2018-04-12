@@ -55,7 +55,7 @@
 
 (defn refresh-index
       [index]
-      (http/post (elastic-url index "/_refresh") {:content-type :json}))
+      (http/post (elastic-url index "_refresh") {:content-type :json}))
 
 (defn delete-index ; TODO -connection timeouts
       [index]
