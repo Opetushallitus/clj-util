@@ -15,7 +15,7 @@
            (.withRegion s3-region)
            (.build)))
 
-(defn init-s3-client [] (reset! (get-standard-client)))
+(defn init-s3-client [] (reset! s3-client (get-standard-client)))
 
 (defn- gen-path [& path-parts] (clojure.string/join "/" path-parts))
 (defn- gen-key [filename & path-parts] (str (apply gen-path path-parts) "/" filename))
