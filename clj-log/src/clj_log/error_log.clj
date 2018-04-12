@@ -11,6 +11,8 @@
              (do ~@body)
              (catch [:status 500] {:keys [~'trace-redirects]}
                (.error (impl/get-logger (impl/find-factory) *ns*) "HTTP 500 from:" ~'trace-redirects))
+             (catch [:status 404] {:keys [~'trace-redirects]}
+               (.error (impl/get-logger (impl/find-factory) *ns*) "HTTP 404 from:" ~'trace-redirects))
              (catch Object ~'_
                (if test
                  (if verbose
