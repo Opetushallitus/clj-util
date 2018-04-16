@@ -32,6 +32,10 @@
       (let [query-map (apply array-map query-params)]
            (elastic-post (elastic-url index mapping-type "_search") query-map)))
 
+(defn count [index mapping-type & query-params]
+      (let [query-map (apply array-map query-params)]
+           (:count (elastic-post (elastic-url index mapping-type "_count") query-map))))
+
 (defn parse-search-result [res] (map :_source (get-in res [:hits :hits])))
 
 (defn get-document [index mapping-type id] ;TODO URL encoding
