@@ -13,6 +13,8 @@
                (.error (impl/get-logger (impl/find-factory) *ns*) "HTTP 500 from:" ~'trace-redirects))
              (catch [:status 404] {:keys [~'trace-redirects]}
                (.error (impl/get-logger (impl/find-factory) *ns*) "HTTP 404 from:" ~'trace-redirects))
+             (catch [:status 400] {:keys [~'trace-redirects ~'body]}
+               (.error (impl/get-logger (impl/find-factory) *ns*) "HTTP 400 from:" ~'trace-redirects " [" ~'body "]"))
              (catch Object ~'_
                (if test
                  (if verbose
