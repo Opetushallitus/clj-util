@@ -10,16 +10,16 @@
           `(try+
              (do ~@body)
              (catch [:status 500] {:keys [~'trace-redirects]}
-               (.error (impl/get-logger (impl/find-factory) *ns*) "HTTP 500 from:" ~'trace-redirects))
+               (.error (impl/get-logger (impl/find-factory) *ns*) (str "HTTP 500 from:" ~'trace-redirects)))
              (catch [:status 404] {:keys [~'trace-redirects]}
-               (.error (impl/get-logger (impl/find-factory) *ns*) "HTTP 404 from:" ~'trace-redirects))
+               (.error (impl/get-logger (impl/find-factory) *ns*) (str "HTTP 404 from:" ~'trace-redirects)))
              (catch [:status 400] {:keys [~'trace-redirects ~'body]}
-               (.error (impl/get-logger (impl/find-factory) *ns*) "HTTP 400 from:" ~'trace-redirects " [" ~'body "]"))
+               (.error (impl/get-logger (impl/find-factory) *ns*) (str "HTTP 400 from:" ~'trace-redirects " [" ~'body "]")))
              (catch Object ~'_
                (if test
                  (if verbose
                    (.error (impl/get-logger (impl/find-factory) *ns*) "Error during test:" (:throwable ~'&throw-context))
-                   (.info (impl/get-logger (impl/find-factory) *ns*) "Error during test:" (:message ~'&throw-context)))
+                   (.info (impl/get-logger (impl/find-factory) *ns*) (str "Error during test:" (:message ~'&throw-context))))
                  (.error (impl/get-logger (impl/find-factory) *ns*) "Error:" (:throwable ~'&throw-context)))
                ~value)))
 
