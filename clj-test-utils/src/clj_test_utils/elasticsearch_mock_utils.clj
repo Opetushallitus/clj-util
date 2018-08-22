@@ -1,6 +1,7 @@
 (ns clj-test-utils.elasticsearch-mock-utils
     (:require
-      [clj-test-utils.test-utils :refer :all])
+      [clj-test-utils.test-utils :refer :all]
+      [clj-test-utils.port-finder :refer [find-free-local-port]])
     (:import
       (pl.allegro.tech.embeddedelasticsearch EmbeddedElastic PopularProperties)))
 
@@ -22,3 +23,8 @@
            (init-test-logging)
            (intern 'clj-elasticsearch.elastic-utils 'elastic-host (str  "http://127.0.0.1:" port))
            (start-embedded-elasticsearch port)))
+
+(defn mock-embedded-elasticsearch-fixture [test]
+      (init-elastic-test)
+      (test)
+      (stop-elastic-test))

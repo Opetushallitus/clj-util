@@ -1,6 +1,6 @@
 (ns clj-test-utils.s3-mock-utils
     (:require [clj-s3.s3-connect :as s3]
-      [clj-test-utils.test-utils :refer [find-free-local-port]])
+      [clj-test-utils.port-finder :refer [find-free-local-port]])
     (:import (io.findify.s3mock S3Mock)
       (com.amazonaws.client.builder AwsClientBuilder$EndpointConfiguration)
       (com.amazonaws.services.s3 AmazonS3ClientBuilder)

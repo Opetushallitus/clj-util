@@ -13,5 +13,7 @@
                                                             :username :env/artifactory_username
                                                             :password :env/artifactory_password
                                                             :snapshots true}]]
-                        :dependencies [[org.clojure/clojure "1.8.0"]]}
+                        :dependencies [[org.clojure/clojure "1.8.0"]
+                                       [io.findify/s3mock_2.11 "0.2.4"]
+                                       [pl.allegro.tech/embedded-elasticsearch "2.4.2"]]}
             :subprocess "../lein"})
