@@ -11,7 +11,7 @@
       (reset! embedded-elastic (-> (EmbeddedElastic/builder)
                                    (.withElasticVersion "6.0.0")
                                    (.withSetting PopularProperties/HTTP_PORT port)
-                                   (.withSetting PopularProperties/CLUSTER_NAME "my_cluster")
+                                   (.withSetting PopularProperties/CLUSTER_NAME "elasticsearch")
                                    (.build)))
       (.start @embedded-elastic))
 
