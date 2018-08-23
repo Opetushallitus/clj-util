@@ -12,6 +12,7 @@
                                    (.withElasticVersion "6.0.0")
                                    (.withSetting PopularProperties/HTTP_PORT port)
                                    (.withSetting PopularProperties/CLUSTER_NAME "elasticsearch")
+                                   (.withSetting "discovery.zen.ping.unicast.hosts" (java.util.ArrayList. [(str  "127.0.0.1:" port)]))
                                    (.build)))
       (.start @embedded-elastic))
 
