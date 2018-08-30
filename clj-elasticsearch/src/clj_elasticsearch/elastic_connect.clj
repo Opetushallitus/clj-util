@@ -32,6 +32,12 @@
       (let [query-map (apply array-map query-params)]
            (elastic-post (elastic-url index mapping-type "_search") query-map)))
 
+(defn simple-search
+  ([index query pretty]
+    (elastic-get (str (elastic-url index) "/_search?q=" query "&pretty=" pretty)))
+  ([index query]
+    (simple-search index query true)))
+
 (defn count [index mapping-type & query-params]
       (let [query-map (apply array-map query-params)]
            (:count (elastic-post (elastic-url index mapping-type "_count") query-map))))
