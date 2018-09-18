@@ -1,0 +1,32 @@
+language: clojure
+
+jdk:
+- oraclejdk8
+
+services:
+- docker
+
+cache:
+  directories:
+  - $HOME/.m2
+
+env:
+  global:
+  # ARTIFACTORY_USERNAME
+  - secure: "eiHxsA93ioTI2ZCtwB7PTIjaTEYm7cZm/CtE87c510HRI8OzE/28SLrJ0+V72/JlSgz2q6og5lWtnkYnm92nfg/YI7IKLUsHeKE6VyWTrOYrYhT6BMm/AADkG1iP2dxKGoS7Xq3gtSvvhpzmdMAIpnDf4/O/S/VxW2QLCHl4lV41fZTrNinj+BAtxrSYiIFBE2OHZ2q3KiU7br95dBN5x+8/c8Eob0hJIcZ+7vlWsV/MTQ4fktMUVu/Vznb40XnTVumWDFgVwoQg1OTBAeq34e2P3ZXV1o0ZN1uKgIb/4zv4+U7LTKBq1GjcNOl0mBm+piHnpvxQeNb31ahLsOuevhsb+HMmMuO8gSjUSN/EYud/VSer3ccHbFlFG/eQdIR5IKaW0ESvZ5556L/hZlnFDQPIPki1Hf3P78FwSrnXeDu0DIKmjU+94Ggm72wKMvyEuWWm+1L1r+UboJ2SE9KEfBkEXjXD2czxomyzxwbCEMbY7fPWsykZWzROVdi32QBgeTtqg9TKBNeotn6iRS1Djsh6UvUoh+QstzIlJgLz9SNilcCttOwHtpBwJRUrpZ4gqRZzoXgXpJX2idbdMlccNYUoc5IqwfA1g3YS8U4bbrX1KwPsYz2J44SEXJsCT4yXFcz6lliPImSnuPT+TFTQ7lVz76w5lcPfcHSSOhjMgCg="
+  # ARTIFACTORY_PASSWORD
+  - secure: "xwHoAYOqHZChNY1AZz9ghDcwbN/WAgH2Za3vM2RvbNck/S+yp4Y7wryvtaDc1vU9XVSpvWqxhxXovILk+fj4G+DnuaJGyESR/GM2dJ++FqyXqWyF35ozL8X/Y3pkEgWnHcK4dHy7KJw2WT/MElqGs/2yw1XH0YfuDpdfK5OX0JG+oLewHbbRysyYF7x5CwkAzpy6rlwIlTPFnJwyoM3Lf/sTdGyCcD7i42e3RQNjVWyChkku6oF5sSMsjHeX21dGvkq6BiWj4lp5ri9iaeVVNA//sKir5eqiUIujVdB5+JDeQFcsxEzhbp0MTiZ7Csbu1wHhbuUA8/21saFJkXIE/5eKkK9cgXCQ1Oz34ZZPYO5oM3GaigHWWnFbYjF0FPpL0NT6e3OzW+REwe3IEC5LcBSWfCzlY6RaUVZDC554GWa6Ub/hIyGaqPhNw0ZtHdshCmbcIb4btig1yBcalkcs/JVPRkLTcCkpg1wKlPXo6BWN+vZaJSfmAxT5h4RHt8QdETn+cY5ex5Fk6YzLzpnA9CVcrV6v+s7eCXdVOpjhfW4qRs3JndbM4mk+Ae9kLAhH7ngXgN8QGcJ1EK6Xp7yd0c62AeR7iDVinxBcibNG5F6KSzs+rxoZlzKi5GgzgNlnl6UgcrhxTIHNNsRNAjE26BenSzAGXrHJkAIi49/EDbI="
+
+install:
+- git clone https://github.com/Opetushallitus/ci-tools.git
+- source ci-tools/common/setup-tools.sh
+
+script:
+- lein modules do clean, compile
+
+deploy:
+- provider: script
+  script: lein modules do deploy
+  skip_cleanup: true
+  on:
+    branch: master
