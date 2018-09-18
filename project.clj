@@ -4,8 +4,13 @@
             :url  "http://www.osor.eu/eupl/"}
   :plugins [[lein-modules "0.3.11"]]
   :modules {:inherited {
-                        :repositories        [["releases" {:url "https://artifactory.oph.ware.fi/artifactory/oph-sade-release-local"
+                        :repositories        [["releases" {:url "https://artifactory.opintopolku.fi/artifactory/oph-sade-release-local"
+                                                           :username :env/artifactory_username
+                                                           :password :env/artifactory_password
                                                            :sign-releases false
                                                            :snapshots false}]
-                                              ["snapshots" "https://artifactory.oph.ware.fi/artifactory/oph-sade-snapshot-local"]]}
+                                              ["snapshots" {:url "https://artifactory.opintopolku.fi/artifactory/oph-sade-snapshot-local"
+                                                            :username :env/artifactory_username
+                                                            :password :env/artifactory_password
+                                                            :snapshots true}]]}
             :subprocess "../lein"})
