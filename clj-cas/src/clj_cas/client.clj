@@ -1,6 +1,6 @@
-(ns clj-util.client
+(ns clj-cas.client
   (:refer-clojure :exclude [get])
-  (:use clj-util.scala-util)
+  (:use clj-cas.scala-util)
   (:import [org.http4s Header$ Headers HttpVersion]))
 
 (def ^:dynamic client (.defaultClient org.http4s.client.blaze.package$/MODULE$))

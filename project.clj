@@ -1,4 +1,4 @@
-(defproject oph/clj-parent "0.3.0-SNAPSHOT"
+(defproject oph/clj-parent "0.4.0-SNAPSHOT"
   :url "http://example.com/FIXME"
   :license {:name "EUPL"
             :url  "http://www.osor.eu/eupl/"}
@@ -12,5 +12,8 @@
                                               ["snapshots" {:url "https://artifactory.opintopolku.fi/artifactory/oph-sade-snapshot-local"
                                                             :username :env/artifactory_username
                                                             :password :env/artifactory_password
-                                                            :snapshots true}]]}
+                                                            :snapshots true}]]
+                        :dependencies [[org.clojure/clojure "1.8.0"]
+                                       [io.findify/s3mock_2.11 "0.2.4"]
+                                       [pl.allegro.tech/embedded-elasticsearch "2.4.2"]]}
             :subprocess "../lein"})
