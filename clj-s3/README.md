@@ -1,6 +1,6 @@
 # Clj-s3
 
-Korjasto, jossa on yhteiskäyttöistä koodia mm. access- ja error-logitukseen.
+Kirjasto, jossa on yhteiskäyttöistä koodia mm. access- ja error-logitukseen.
 
 ## Käyttö
 

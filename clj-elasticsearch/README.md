@@ -1,6 +1,6 @@
 # Clj-elasticsearch
 
-Korjasto, jossa on yhteiskäyttöistä koodia Elasticsearchin HTTP-rajapinnan käyttöön.
+Kirjasto, jossa on yhteiskäyttöistä koodia Elasticsearchin HTTP-rajapinnan käyttöön.
 
 ## Käyttö
 
