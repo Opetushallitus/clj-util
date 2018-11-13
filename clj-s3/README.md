@@ -1,6 +1,6 @@
 # Clj-s3
 
-Kirjasto, jossa on yhteiskäyttöistä koodia mm. access- ja error-logitukseen.
+Kirjasto, jossa on yhteiskäyttöistä koodia Amazonin S3:n käyttöön.
 
 ## Käyttö
 
