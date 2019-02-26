@@ -2,19 +2,25 @@
     (:require
       [clj-test-utils.test-utils :refer :all]
       [clj-test-utils.port-finder :refer [find-free-local-port]])
-    (:import
-      (pl.allegro.tech.embeddedelasticsearch EmbeddedElastic PopularProperties)))
+  (:import
+    (pl.allegro.tech.embeddedelasticsearch EmbeddedElastic PopularProperties)
+    (java.util.concurrent TimeUnit)))
 
 (def embedded-elastic (atom nil))
 
-(defn start-embedded-elasticsearch [port]
-      (reset! embedded-elastic (-> (EmbeddedElastic/builder)
-                                   (.withElasticVersion "6.0.0")
-                                   (.withSetting PopularProperties/HTTP_PORT port)
-                                   (.withSetting PopularProperties/CLUSTER_NAME "elasticsearch")
-                                   (.withSetting "discovery.zen.ping.unicast.hosts" (java.util.ArrayList. [(str  "127.0.0.1:" port)]))
-                                   (.build)))
-      (.start @embedded-elastic))
+(defn start-embedded-elasticsearch
+  ([port timeoutInMillis]
+    (reset! embedded-elastic (-> (EmbeddedElastic/builder)
+                                 (.withElasticVersion "6.0.0")
+                                 (.withSetting PopularProperties/HTTP_PORT port)
+                                 (.withSetting PopularProperties/CLUSTER_NAME "elasticsearch")
+                                 (.withSetting "discovery.zen.ping.unicast.hosts" (java.util.ArrayList. [(str  "127.0.0.1:" port)]))
+                                 (.withStartTimeout timeoutInMillis TimeUnit/MILLISECONDS)
+                                 (.build)))
+    (.start @embedded-elastic))
+  ([port]
+    (start-embedded-elasticsearch port (* 60 1000))))
+
 
 (defn stop-elastic-test []
       (.stop @embedded-elastic))
