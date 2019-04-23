@@ -1,4 +1,4 @@
-(defproject oph/clj-test-utils "0.2.0-SNAPSHOT"
+(defproject oph/clj-test-utils "0.2.1-SNAPSHOT"
             :description "oph clojure testing utilities"
             :url "http://example.com/FIXME"
             :license {:name "EUPL"

@@ -1,4 +1,4 @@
-(defproject oph/clj-parent "0.5.0-SNAPSHOT"
+(defproject oph/clj-parent "0.5.1-SNAPSHOT"
   :url "http://example.com/FIXME"
   :license {:name "EUPL"
             :url  "http://www.osor.eu/eupl/"}
@@ -12,6 +12,7 @@
                                               ["snapshots" {:url "https://artifactory.opintopolku.fi/artifactory/oph-sade-snapshot-local"
                                                             :username :env/artifactory_username
                                                             :password :env/artifactory_password
+                                                            :sign-releases false
                                                             :snapshots true}]]
                         :dependencies [[org.clojure/clojure "1.8.0"]
                                        [io.findify/s3mock_2.12 "0.2.4"]
