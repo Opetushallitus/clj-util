@@ -11,7 +11,6 @@
 
 (defn- get-standard-client []
        (-> (AmazonS3ClientBuilder/standard)
-           (.withCredentials (InstanceProfileCredentialsProvider/createAsyncRefreshingProvider true))
            (.withRegion s3-region)
            (.build)))
 
