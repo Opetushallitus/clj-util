@@ -1,7 +1,8 @@
 (ns clj-test-utils.elasticsearch-mock-utils
     (:require
       [clj-test-utils.test-utils :refer :all]
-      [clj-test-utils.port-finder :refer [find-free-local-port]])
+      [clj-test-utils.port-finder :refer [find-free-local-port]]
+      [robert.hooke :refer [add-hook]])
   (:import
     (pl.allegro.tech.embeddedelasticsearch EmbeddedElastic PopularProperties)
     (java.util.concurrent TimeUnit)))
@@ -35,3 +36,12 @@
       (init-elastic-test)
       (test)
       (stop-elastic-test))
+
+(defn global-elasticsearch-fixture
+  []
+  (defn- run-all-test-hook [f & nss]
+    (init-elastic-test)
+    (let [result (apply f nss)]
+      (stop-elastic-test)
+      result))
+    (add-hook #'clojure.test/run-tests #'run-all-test-hook))
