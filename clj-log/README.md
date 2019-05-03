@@ -16,9 +16,3 @@ Access-logiin tulevan servicen konfigurointi:
 (intern 'clj-log.access-log 'service "konfo-backend")
 ```
 
-Error-logituksen konfigurointi testausta varten:
-
-```
-(intern 'clj-log.error-log 'test true)
-(intern 'clj-log.error-log 'verbose false)
-```

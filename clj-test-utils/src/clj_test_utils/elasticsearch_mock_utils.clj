@@ -1,6 +1,5 @@
 (ns clj-test-utils.elasticsearch-mock-utils
     (:require
-      [clj-test-utils.test-utils :refer :all]
       [clj-test-utils.port-finder :refer [find-free-local-port]]
       [robert.hooke :refer [add-hook]])
   (:import
@@ -28,7 +27,6 @@
 
 (defn init-elastic-test []
       (let [port (find-free-local-port)]
-           (init-test-logging)
            (intern 'clj-elasticsearch.elastic-utils 'elastic-host (str  "http://127.0.0.1:" port))
            (start-embedded-elasticsearch port)))
 
