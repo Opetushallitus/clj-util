@@ -1,7 +1,6 @@
 (ns clj-s3.s3-connect
     (:import (com.amazonaws.services.s3 AmazonS3ClientBuilder)
       (com.amazonaws.services.s3.model ObjectMetadata PutObjectRequest ListObjectsV2Request DeleteObjectsRequest)
-      (com.amazonaws.auth InstanceProfileCredentialsProvider)
       (java.io ByteArrayInputStream)))
 
 (declare s3-region)
