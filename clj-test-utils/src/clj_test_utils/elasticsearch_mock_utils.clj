@@ -37,9 +37,11 @@
 
 (defn global-elasticsearch-fixture
   []
-  (defn- run-all-test-hook [f & nss]
-    (init-elastic-test)
-    (let [result (apply f nss)]
-      (stop-elastic-test)
-      result))
+  (defn- run-all-test-hook
+    [f & nss]
+    (let [embedded-elasticsearch? (find-ns 'clj-elasticsearch.elastic-utils)]
+      (when embedded-elasticsearch? (init-elastic-test))
+        (let [result (apply f nss)]
+          (when embedded-elasticsearch? (stop-elastic-test))
+          result)))
     (add-hook #'clojure.test/run-tests #'run-all-test-hook))
