@@ -7,7 +7,8 @@
 
 (defn cas-client [^String uri] (CasClient. uri cl/client))
 
-(defn cassableclient [^CasClient cc ^CasParams cp] (CasAuthenticatingClient. cc cp cl/client))
+(defn cassableclient [^CasClient cc ^CasParams cp caller-id session-cookie-name]
+  (CasAuthenticatingClient. cc cp cl/client caller-id session-cookie-name))
 
 (def current-client (atom nil))
 
@@ -15,8 +16,8 @@
   (let [cc (cas-client uri)]
     (swap! current-client (constantly cc))))
 
-(defn get [^CasParams cp ^String uri & options]
-  ((partial apply cl/get uri :cl (cassableclient @current-client cp)) options))
+(defn get [^CasParams cp ^String uri caller-id session-cookie-name & options]
+  ((partial apply cl/get uri :cl (cassableclient @current-client cp caller-id session-cookie-name)) options))
 
-(defn post [^CasParams cp ^String uri body & options]
-  ((partial apply cl/post uri body :cl (cassableclient @current-client cp)) options))
+(defn post [^CasParams cp ^String uri body caller-id session-cookie-name & options]
+  ((partial apply cl/post uri body :cl (cassableclient @current-client cp caller-id session-cookie-name)) options))
