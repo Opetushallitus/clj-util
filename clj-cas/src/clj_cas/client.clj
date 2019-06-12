@@ -32,7 +32,7 @@
 
 
 (defn attribute-entry [k v]
-  (org.http4s.AttributeEntry. (org.http4s.AttributeKey. k) v))
+  (org.http4s.AttributeEntry. (org.http4s.AttributeKey.) v))
 
 (defn attributes [am]
   (.apply org.http4s.AttributeMap$/MODULE$
