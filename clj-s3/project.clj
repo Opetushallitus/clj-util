@@ -1,4 +1,4 @@
-(defproject oph/clj-s3 "0.2.3-SNAPSHOT"
+(defproject oph/clj-s3 "0.2.4-SNAPSHOT"
             :description "oph clojure s3 utilities"
             :url "http://example.com/FIXME"
             :license {:name "EUPL"
