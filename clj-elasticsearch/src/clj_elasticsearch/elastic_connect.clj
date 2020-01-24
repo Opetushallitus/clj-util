@@ -50,10 +50,13 @@
         (catch Exception e
           (if (= 404 ((ex-data e) :status)) {:found false} (throw e)))))
 
-(defn bulk [index mapping-type data]
-      (if (not (empty? data))
-        (let [partitions (bulk-partitions data)]
-             (doall (map #(elastic-post (elastic-url index mapping-type "_bulk") %) partitions)))))
+(defn bulk
+  [index mapping-type data]
+  (if (not (empty? data))
+    (let [bulk-url   (elastic-url index mapping-type "_bulk")
+          partitions (bulk-partitions data)]
+      (for [partition partitions]
+        (elastic-post bulk-url partition)))))
 
 (defn index-exists [index]
       (try
