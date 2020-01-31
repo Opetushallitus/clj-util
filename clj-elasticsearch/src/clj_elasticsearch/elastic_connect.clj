@@ -52,7 +52,7 @@
 
 (defn bulk
   [index mapping-type data]
-  (if (not (empty? data))
+  (when (seq data)
     (let [bulk-url   (elastic-url index mapping-type "_bulk")
           partitions (bulk-partitions data)]
       (for [partition partitions]
