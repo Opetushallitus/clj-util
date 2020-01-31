@@ -1,6 +1,7 @@
 (ns clj-elasticsearch.elastic-utils
     (:require [clj-http.client :as http]
-              [cheshire.core :as json]))
+              [cheshire.core :as json]
+              [clojure.string :refer [join]]))
 
 (declare elastic-host)
 
@@ -57,14 +58,23 @@
 ;MAX request payload size in AWS ElasticSearch
 (defonce max-payload-size 10485760)
 
-(defn bulk-partitions [data]
-      (let [encoded-data (map #(str (json/encode %) "\n") data)
-            action-and-data-entries (partition 2 encoded-data)
-            bulk-entries (map (fn [e] (str (first e) (second e))) action-and-data-entries)
-            cur-bytes (atom 0)
-            partitioner (fn [e]
-                            (let [bytes (count (.getBytes e))]
-                                 (if (> max-payload-size (+ @cur-bytes bytes))
-                                   (do (reset! cur-bytes (+ @cur-bytes bytes)) true)
-                                   (do (reset! cur-bytes 0) false))))]
-           (map #(clojure.string/join %) (partition-by partitioner bulk-entries))))
+(defn bulk-partitions
+  [data]
+  (let [action? (fn [d] (or (contains? d :index) (contains? d :update) (contains? d :create) (contains? d :delete)))
+        action-counter (atom 0)
+        action-nr (fn [d] (if (action? d)
+                            (swap! action-counter inc)
+                            @action-counter))
+        encode (fn [a] (join (map #(str (json/encode %) "\n") a)))
+        cur-bytes (atom 0)
+        partitioner (fn [e]
+                      (let [bytes (count (.getBytes e))]
+                        (if (> max-payload-size (+ @cur-bytes bytes))
+                          (do (reset! cur-bytes (+ @cur-bytes bytes)) true)
+                          (do (reset! cur-bytes 0) false))))]
+
+    (->> data
+         (partition-by action-nr)
+         (map encode)
+         (partition-by partitioner)
+         (map #(clojure.string/join %)))))
