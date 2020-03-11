@@ -1,77 +1,89 @@
 (ns clj-elasticsearch.elastic-connect
     (:require [clj-elasticsearch.elastic-utils :refer :all]
-              [clj-http.client :as http]
-              [cheshire.core :as json]))
+              [clj-http.client :as http]))
 
-(defn get-cluster-health []
-      (elastic-get-response (str elastic-host "/_cluster/health")))
+(defn get-cluster-health
+  []
+  (elastic-get (elastic-url "_cluster" "health") {} false))
 
-(defn check-elastic-status []
-      (-> (get-cluster-health)
-          :status
-          (= 200)))
+(defn check-elastic-status
+  []
+  (-> (get-cluster-health)
+      :status
+      (= 200)))
 
 (defn get-indices-info
-      []
-      (-> (elastic-get-response (str elastic-host "/_cat/indices?v&format=json"))
-          :body))
+  []
+  (-> (elastic-get (elastic-url "_cat" "indices") {:v "" :format "json"})))
 
 (defn get-elastic-status
-      []
-      {:cluster_health (:body (get-cluster-health))
-       :indices-info (get-indices-info)})
+  []
+  {:cluster_health (:body (get-cluster-health))
+   :indices-info (get-indices-info)})
 
-(defn create [index mapping-type document]
-      (elastic-post (elastic-url index mapping-type) document))
+(defn create
+  [index document]
+  (elastic-post (elastic-url index) document))
 
-(defn create-index [index settings]            ;TODO mappings can be also created here
-      (let [json {:settings settings}]
-           (elastic-put (elastic-url index) json)))
+(defn create-index
+  ([index settings mappings]
+   (let [json (cond-> {:settings settings}
+                      (seq (keys mappings)) (merge {:mappings mappings}))]
+     (elastic-put (elastic-url index) json)))
+  ([index settings]
+   (create-index index settings nil)))
 
-(defn search [index mapping-type & query-params]
-      (let [query-map (apply array-map query-params)]
-           (elastic-post (elastic-url index mapping-type "_search") query-map)))
+(defn search
+  [index & query-params]
+  (let [query-map (apply array-map query-params)]
+    (elastic-post (elastic-url index "_search") query-map)))
 
 (defn simple-search
   ([index query pretty]
-    (elastic-get (str (elastic-url index) "/_search?q=" query "&pretty=" pretty)))
+    (elastic-get (elastic-url index "_search" { :q query :pretty pretty})))
   ([index query]
     (simple-search index query true)))
 
-(defn count [index mapping-type & query-params]
-      (let [query-map (apply array-map query-params)]
-           (:count (elastic-post (elastic-url index mapping-type "_count") query-map))))
+(defn count
+  [index & query-params]
+  (let [query-map (apply array-map query-params)]
+    (:count (elastic-post (elastic-url index "_count") query-map))))
 
-(defn parse-search-result [res] (map :_source (get-in res [:hits :hits])))
+(defn parse-search-result
+  [res]
+  (map :_source (get-in res [:hits :hits])))
 
-(defn get-document [index mapping-type id] ;TODO URL encoding
-      (try
-        (elastic-get (elastic-url index mapping-type id))
-        (catch Exception e
-          (if (= 404 ((ex-data e) :status)) {:found false} (throw e)))))
+(defn get-document
+  [index id] ;TODO URL encoding
+  (try
+    (elastic-get (elastic-url index "_doc" id))
+    (catch Exception e
+      (if (= 404 (some-> e (ex-data) :status)) {:found false} (throw e)))))
 
 (defn bulk
-  [index mapping-type data]
+  [index data]
   (when (seq data)
-    (let [bulk-url   (elastic-url index mapping-type "_bulk")
+    (let [bulk-url   (elastic-url index "_bulk")
           partitions (bulk-partitions data)]
       (for [partition partitions]
         (elastic-post bulk-url partition)))))
 
-(defn index-exists [index]
-      (try
-        (-> (http/head (elastic-url index))
-            (:status)
-            (= 200))
-        (catch Exception e
-          (if (= 404 ((ex-data e) :status)) false (throw e)))))
+(defn index-exists
+  [index]
+  (try
+    (-> (http/head (elastic-url index))
+        (:status)
+        (= 200))
+    (catch Exception e
+      (if (= 404 ((ex-data e) :status)) false (throw e)))))
 
 (defn refresh-index
-      [index]
-      (http/post (elastic-url index "_refresh") {:content-type :json}))
+  [index]
+  (http/post (elastic-url index "_refresh") {:content-type :json}))
 
 (defn delete-index ; TODO -connection timeouts
-      [index]
-      (try (elastic-delete (elastic-url index))
-         (catch Exception e
-           (if (not (= 404((ex-data e) :status))) (throw e)))))
+  [index]
+  (try
+    (elastic-delete (elastic-url index))
+    (catch Exception e
+      (if (not (= 404 ((ex-data e) :status))) (throw e)))))

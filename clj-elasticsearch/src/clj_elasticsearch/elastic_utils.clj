@@ -8,52 +8,46 @@
 (defonce timeout 120000)
 
 (defn index-name
-      [name is-test]
-      (str name (when is-test "_test")))
-
-(defn join-names
-      [name-or-names]
-      (clojure.string/join "," (flatten [name-or-names])))
+  [name is-test]
+  (str name (when is-test "_test")))
 
 (defn elastic-url
-      ([index]
-        (str elastic-host "/" index))
-      ([index mapping-type]
-        (str elastic-host "/" index "/" mapping-type))
-      ([index mapping-type operation]
-        (str elastic-host "/" index "/" mapping-type "/" operation )))
+  [& parts]
+  (str elastic-host (apply str (map #(str "/" %) parts))))
 
-(defn json-request [body] {:body (if (instance? String body) body (json/encode body)) :content-type :json :socket-timeout timeout})
+(defn- json-request
+  [body]
+  {:body (if (instance? String body) body (json/encode body))
+   :as :json
+   :content-type :json
+   :socket-timeout timeout})
 
 (defn elastic-post
-      [url body]
-      (-> (http/post url (json-request body))
-          (:body)
-          (json/decode true)))
+  ([url body parseBody?]
+   (cond-> (http/post url (json-request body))
+           parseBody? (:body)))
+  ([url body]
+   (elastic-post url body true)))
 
 (defn elastic-put
-      [url body]
-      (-> (http/put url (json-request body))
-          (:body)
-          (json/decode true)))
+  ([url body parseBody?]
+   (cond-> (http/put url (json-request body))
+           parseBody? (:body)))
+  ([url body]
+   (elastic-put url body true)))
 
 (defn elastic-get
-      ([url]
-        (-> (http/get url {:socket-timeout timeout})
-            (:body)
-            (json/decode true))))
+  ([url query-params parseBody?]
+   (cond-> (http/get url (cond-> {:socket-timeout timeout :as :json} (seq (keys query-params)) (merge {:query-params query-params})))
+            parseBody? (:body)))
+  ([url query-params]
+   (elastic-get url query-params true))
+  ([url]
+   (elastic-get url {} true)))
 
-(defn elastic-delete [url]
-      (http/delete url {:content-type :json :body "{}" :socket-timeout timeout}))
-
-(defn elastic-get-as-json
-      ([url]
-        (-> (http/get url {:socket-timeout timeout :as :json})
-            (:body)
-            (json/decode true))))
-
-(defn elastic-get-response
-      [url] (http/get url {:socket-timeout timeout :as :json}))
+(defn elastic-delete
+  [url]
+  (http/delete url {:content-type :json :body "{}" :socket-timeout timeout}))
 
 ;MAX request payload size in AWS ElasticSearch
 (defonce max-payload-size 10485760)
