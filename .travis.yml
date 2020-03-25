@@ -30,3 +30,8 @@ deploy:
   skip_cleanup: true
   on:
     branch: master
+- provider: script
+  script: lein modules :dirs "clj-timbre-auditlog" do deploy
+  skip_cleanup: true
+  on:
+    branch: audit-logitus_atarusta
