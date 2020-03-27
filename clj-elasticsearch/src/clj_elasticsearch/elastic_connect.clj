@@ -29,7 +29,7 @@
   ([index settings mappings]
    (let [json (cond-> {:settings settings}
                       (seq (keys mappings)) (merge {:mappings mappings}))]
-     (elastic-put (elastic-url index) json)))
+     (elastic-put (elastic-url index) json {:include_type_name false})))
   ([index settings]
    (create-index index settings nil)))
 
@@ -40,7 +40,7 @@
 
 (defn simple-search
   ([index query pretty]
-    (elastic-get (elastic-url index "_search" { :q query :pretty pretty})))
+    (elastic-get (elastic-url index "_search") { :q query :pretty pretty}))
   ([index query]
     (simple-search index query true)))
 
@@ -87,3 +87,38 @@
     (elastic-delete (elastic-url index))
     (catch Exception e
       (if (not (= 404 ((ex-data e) :status))) (throw e)))))
+
+(defn move-alias
+  ([alias index write-index?]
+   (elastic-post (elastic-url "/_aliases") {:actions [{:add {:index index :alias alias :is_write_index write-index?}},
+                                                      {:remove {:index "*" :alias alias}}]}))
+  ([alias index]
+   (move-alias alias index false)))
+
+(defn list-indices-with-alias
+  [alias]
+  (try
+    (let [response (elastic-get (elastic-url "/_alias" alias))]
+      (vec (for [index (keys response)]
+             {:index (name index)
+              :is_write_index (get-in response [index :aliases (keyword alias) :is_write_index])})))
+    (catch Exception e
+      (if (= 404 (:status (ex-data e))) [] (throw e)))))
+
+(defn find-write-index
+  [alias]
+  (when-let [write-index (first (filter #(:is_write_index %) (list-indices-with-alias alias)))]
+    (:index write-index)))
+
+(defn list-aliases
+  []
+  (try
+    (elastic-get (elastic-url "_aliases"))
+    (catch Exception e
+      (if (= 404 ((ex-data e) :status)) {:found false} (throw e)))))
+
+(defn move-read-alias-to-write-index
+  [write-alias read-alias]
+  (when-let [write-index (find-write-index write-alias)]
+    (move-alias read-alias write-index)
+    write-index))

@@ -7,10 +7,6 @@
 
 (defonce timeout 120000)
 
-(defn index-name
-  [name is-test]
-  (str name (when is-test "_test")))
-
 (defn elastic-url
   [& parts]
   (str elastic-host (apply str (map #(str "/" %) parts))))
@@ -22,23 +18,31 @@
    :content-type :json
    :socket-timeout timeout})
 
+(defn- merge-query-params
+  [request query-params]
+  (cond-> request (seq (keys query-params)) (merge {:query-params query-params})))
+
 (defn elastic-post
-  ([url body parseBody?]
-   (cond-> (http/post url (json-request body))
+  ([url body query-params parseBody?]
+   (cond-> (http/post url (-> body json-request (merge-query-params query-params)))
            parseBody? (:body)))
+  ([url body query-params]
+   (elastic-post url body query-params true))
   ([url body]
-   (elastic-post url body true)))
+   (elastic-post url body {} true)))
 
 (defn elastic-put
-  ([url body parseBody?]
-   (cond-> (http/put url (json-request body))
+  ([url body query-params parseBody?]
+   (cond-> (http/put url (-> body json-request (merge-query-params query-params)))
            parseBody? (:body)))
+  ([url body query-params]
+   (elastic-put url body query-params true))
   ([url body]
-   (elastic-put url body true)))
+   (elastic-put url body {} true)))
 
 (defn elastic-get
   ([url query-params parseBody?]
-   (cond-> (http/get url (cond-> {:socket-timeout timeout :as :json} (seq (keys query-params)) (merge {:query-params query-params})))
+   (cond-> (http/get url (merge-query-params {:socket-timeout timeout :as :json} query-params))
             parseBody? (:body)))
   ([url query-params]
    (elastic-get url query-params true))
