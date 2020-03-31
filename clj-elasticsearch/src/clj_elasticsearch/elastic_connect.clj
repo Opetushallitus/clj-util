@@ -90,8 +90,8 @@
 
 (defn move-alias
   ([alias index write-index?]
-   (elastic-post (elastic-url "/_aliases") {:actions [{:add {:index index :alias alias :is_write_index write-index?}},
-                                                      {:remove {:index "*" :alias alias}}]}))
+   (elastic-post (elastic-url "/_aliases") {:actions [{:remove {:index "*" :alias alias}},
+                                                      {:add {:index index :alias alias :is_write_index write-index?}}]}))
   ([alias index]
    (move-alias alias index false)))
 
