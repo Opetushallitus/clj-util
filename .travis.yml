@@ -7,8 +7,10 @@ services:
 - docker
 
 cache:
+  npm: true
   directories:
   - $HOME/.m2
+  - clj-string-normalizer/node_modules
 
 env:
   global:
@@ -21,12 +23,19 @@ install:
 - git clone https://github.com/Opetushallitus/ci-tools.git
 - source ci-tools/common/setup-tools.sh
 
-script:
-- lein modules do clean, compile
+script: >-
+  lein modules do clean, compile &&
+  nvm install v12 &&
+  nvm use v12 &&
+  ./clj-string-normalizer/bin/cibuild.sh npm:install &&
+  ./clj-string-normalizer/bin/cibuild.sh lint &&
+  ./clj-string-normalizer/bin/cibuild.sh test
 
 deploy:
 - provider: script
-  script: lein modules do deploy
+  script: >-
+    lein modules do deploy &&
+    ./clj-string-normalizer/bin/cibuild.sh deploy
   skip_cleanup: true
   on:
     branch: master

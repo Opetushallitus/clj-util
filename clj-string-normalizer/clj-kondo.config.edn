@@ -1,0 +1,12 @@
+{:linters {:unused-namespace    {:exclude [cljs.repl]}
+           :unused-referred-var {:exclude {cljs.repl [Error->map
+                                                      apropos
+                                                      dir
+                                                      doc
+                                                      error->str
+                                                      ex-str
+                                                      ex-triage
+                                                      find-doc
+                                                      print-doc
+                                                      pst
+                                                      source]}}}}
