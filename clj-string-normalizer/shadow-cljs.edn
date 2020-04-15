@@ -1,0 +1,5 @@
+{:lein   true
+
+ :builds {:unit-test {:target    :karma
+                      :ns-regexp "-test$"
+                      :output-to "target/unit-test.js"}}}
