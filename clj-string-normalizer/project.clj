@@ -10,12 +10,12 @@
                               :username      :env/artifactory_username
                               :password      :env/artifactory_password
                               :sign-releases false
-                              :snapshots     false}
-                  ["snapshots" {:url           "https://artifactory.opinlein topolku.fi/artifactory/oph-sade-snapshot-local"
-                                :username      :env/artifactory_username
-                                :password      :env/artifactory_password
-                                :sign-releases false
-                                :snapshots     true}]]]
+                              :snapshots     false}]
+                 ["snapshots" {:url           "https://artifactory.opintopolku.fi/artifactory/oph-sade-snapshot-local"
+                               :username      :env/artifactory_username
+                               :password      :env/artifactory_password
+                               :sign-releases false
+                               :snapshots     true}]]
 
   :source-paths ["src/clj" "src/cljc" "src/cljs"]
 
