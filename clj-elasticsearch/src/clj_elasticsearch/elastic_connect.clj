@@ -54,7 +54,7 @@
   (map :_source (get-in res [:hits :hits])))
 
 (defn get-document
-  [index id] ;TODO URL encoding
+  [index id]
   (try
     (elastic-get (elastic-url index "_doc" id))
     (catch Exception e
