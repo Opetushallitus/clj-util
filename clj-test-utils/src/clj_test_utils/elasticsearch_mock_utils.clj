@@ -15,6 +15,7 @@
                                  (.withSetting PopularProperties/HTTP_PORT port)
                                  (.withSetting PopularProperties/CLUSTER_NAME "elasticsearch")
                                  (.withSetting "discovery.zen.ping.unicast.hosts" (java.util.ArrayList. [(str  "127.0.0.1:" port)]))
+                                 (.withSetting "action.auto_create_index" ".watches,.triggered_watches,.watcher-history-*")
                                  (.withStartTimeout timeoutInMillis TimeUnit/MILLISECONDS)
                                  (.build)))
     (.start @embedded-elastic))
