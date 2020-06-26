@@ -39,8 +39,3 @@ deploy:
   skip_cleanup: true
   on:
     branch: master
-- provider: script
-  script: lein modules :dirs "clj-ring-db-cas-session" do deploy
-  skip_cleanup: true
-  on:
-    branch: sessionhallinta_atarusta
