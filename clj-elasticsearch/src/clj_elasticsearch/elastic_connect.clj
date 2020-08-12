@@ -54,11 +54,12 @@
   (map :_source (get-in res [:hits :hits])))
 
 (defn get-document
-  [index id]
-  (try
-    (elastic-get (elastic-url index "_doc" id))
-    (catch Exception e
-      (if (= 404 (some-> e (ex-data) :status)) {:found false} (throw e)))))
+  [index id & query-params]
+  (let [query-map (apply array-map query-params)]
+    (try
+      (elastic-get (elastic-url index "_doc" id) query-map)
+      (catch Exception e
+        (if (= 404 (some-> e (ex-data) :status)) {:found false} (throw e))))))
 
 (defn bulk
   [index data]
