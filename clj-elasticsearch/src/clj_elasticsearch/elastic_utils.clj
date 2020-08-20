@@ -41,6 +41,9 @@
    (elastic-put url body {} true)))
 
 (defn elastic-get
+  ([url body query-params parseBody?]
+   (cond-> (http/get url (-> body json-request (merge-query-params query-params)))
+           parseBody? (:body)))
   ([url query-params parseBody?]
    (cond-> (http/get url (merge-query-params {:socket-timeout timeout :as :json} query-params))
             parseBody? (:body)))
