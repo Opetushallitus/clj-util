@@ -61,6 +61,14 @@
       (catch Exception e
         (if (= 404 (some-> e (ex-data) :status)) {:found false} (throw e))))))
 
+(defn multi-get
+  [index ids & query-params]
+  (->> (elastic-get (elastic-url index "_doc" "_mget") {:ids (vec ids)} (apply array-map query-params) true)
+       :docs
+       (filter :found)
+       (map :_source)
+       (vec)))
+
 (defn bulk
   [index data]
   (when (seq data)
