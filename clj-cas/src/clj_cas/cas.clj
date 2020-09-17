@@ -5,7 +5,7 @@
 
 (defn cas-params [uri user passwd] (CasParams/apply uri user passwd))
 
-(defn cas-client [^String uri] (CasClient. uri cl/client))
+(defn cas-client [^String uri ^String caller-id] (CasClient. uri cl/client caller-id))
 
 (defn cassableclient [^CasClient cc ^CasParams cp caller-id session-cookie-name]
   (CasAuthenticatingClient. cc cp cl/client caller-id session-cookie-name))
