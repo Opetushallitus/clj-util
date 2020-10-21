@@ -13,14 +13,15 @@
 
 (defn create-audit-logger [service-name base-path ^ApplicationType application-type]
   (let [audit-log-config (assoc timbre/example-config
-                                :appenders {:file-appender   (assoc (rolling-appender
+                                :appenders {:standard-out     {:enabled? false}
+                                            :println          nil
+                                            :file-appender   (assoc (rolling-appender
                                                                      {:path    (str base-path
                                                                                     "/audit_" service-name
                                                                                     ;; Hostname will differentiate files in actual environments
                                                                                     (when (:hostname env) (str "_" (:hostname env))))
                                                                       :pattern :daily})
-                                                                    :output-fn (fn [data] (force (:msg_ data))))
-                                            :stdout-appender nil}
+                                                                    :output-fn (fn [data] (force (:msg_ data))))}
                                 :timestamp-opts {:pattern  "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
                                                  :timezone (TimeZone/getTimeZone "Europe/Helsinki")})
         logger           (proxy [Logger] [] (log [s]
