@@ -15,7 +15,7 @@
                                  (.withElasticVersion "6.8.4")
                                  (.withSetting PopularProperties/HTTP_PORT port)
                                  (.withSetting PopularProperties/CLUSTER_NAME "elasticsearch")
-                                 (.withSetting "discovery.zen.ping.unicast.hosts" (java.util.ArrayList. [(str  "127.0.0.1:" port)]))
+                                 (.withSetting "discovery.zen.ping.unicast.hosts" (java.util.ArrayList. [(str "127.0.0.1:" port)]))
                                  (.withSetting "action.auto_create_index" ".watches,.triggered_watches,.watcher-history-*")
                                  (.withStartTimeout timeoutInMillis TimeUnit/MILLISECONDS)
                                  (.build)))
@@ -29,7 +29,7 @@
 
 (defn init-elastic-test []
       (let [port (find-free-local-port)]
-           (intern 'clj-elasticsearch.elastic-utils 'elastic-host (str  "http://127.0.0.1:" port))
+           (intern 'clj-elasticsearch.elastic-utils 'elastic-host (str "http://127.0.0.1:" port))
            (start-embedded-elasticsearch port)))
 
 (defn mock-embedded-elasticsearch-fixture [test]
