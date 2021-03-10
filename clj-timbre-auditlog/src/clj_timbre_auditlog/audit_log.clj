@@ -13,20 +13,18 @@
 
 (defn create-audit-logger [service-name base-path ^ApplicationType application-type]
   (let [audit-log-config (assoc timbre/example-config
-                                :appenders {:file-appender   (assoc (rolling-appender
+                                :appenders {:standard-out     {:enabled? false
+                                                               :async?   true}
+                                            :println          {:enabled? false
+                                                               :async?   true}
+                                            :file-appender   (-> (rolling-appender
                                                                      {:path    (str base-path
                                                                                     "/audit_" service-name
                                                                                     ;; Hostname will differentiate files in actual environments
                                                                                     (when (:hostname env) (str "_" (:hostname env))))
                                                                       :pattern :daily})
-                                                                    :output-fn (fn [data] (force (:msg_ data))))
-                                            :stdout-appender (assoc (println-appender
-                                                                     {:stream :std-out})
-                                                                    :output-fn (fn [data]
-                                                                                 (json/generate-string
-                                                                                  {:eventType "audit"
-                                                                                   :timestamp (force (:timestamp_ data))
-                                                                                   :event     (json/parse-string (force (:msg_ data)))})))}
+                                                                 (assoc :output-fn (fn [data] (force (:msg_ data))))
+                                                                 (assoc :async? true))}
                                 :timestamp-opts {:pattern  "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
                                                  :timezone (TimeZone/getTimeZone "Europe/Helsinki")})
         logger           (proxy [Logger] [] (log [s]
