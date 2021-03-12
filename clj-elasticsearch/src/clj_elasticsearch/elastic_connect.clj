@@ -1,4 +1,5 @@
 (ns clj-elasticsearch.elastic-connect
+    (:refer-clojure :exclude [count])
     (:require [clj-elasticsearch.elastic-utils :refer :all]
               [clj-http.client :as http]))
 
