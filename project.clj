@@ -14,7 +14,7 @@
                                                             :password :env/artifactory_password
                                                             :sign-releases false
                                                             :snapshots true}]]
-                        :dependencies [[org.clojure/clojure "1.8.0"]
-                                       [io.findify/s3mock_2.12 "0.2.4"]
+                        :dependencies [[org.clojure/clojure "1.10.3"]
+                                       [io.findify/s3mock_2.12 "0.2.6"]
                                        [pl.allegro.tech/embedded-elasticsearch "2.10.0"]]}
             :subprocess "../lein"})
