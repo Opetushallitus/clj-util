@@ -22,7 +22,7 @@
   :test-paths ["test/clj" "test/cljc" "test/cljs"]
 
   :dependencies [[org.clojure/clojure "1.10.3"]
-                 [org.clojure/clojurescript "1.10.773"
+                 [org.clojure/clojurescript "1.10.764"
                   :exclusions [com.google.javascript/closure-compiler-unshaded
                                org.clojure/google-closure-library
                                org.clojure/google-closure-library-third-party]]
