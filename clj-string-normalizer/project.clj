@@ -1,4 +1,4 @@
-(defproject oph/clj-string-normalizer "0.1.0-SNAPSHOT"
+(defproject oph/clj-string-normalizer "0.1.1-SNAPSHOT"
   :description "Functionalities to normalize strings"
 
   :url "https://github.com/Opetushallitus/clj-util/tree/master/clj-string-normalizer"
@@ -21,12 +21,12 @@
 
   :test-paths ["test/clj" "test/cljc" "test/cljs"]
 
-  :dependencies [[org.clojure/clojure "1.10.1"]
-                 [org.clojure/clojurescript "1.10.597"
+  :dependencies [[org.clojure/clojure "1.10.3"]
+                 [org.clojure/clojurescript "1.10.764"
                   :exclusions [com.google.javascript/closure-compiler-unshaded
                                org.clojure/google-closure-library
                                org.clojure/google-closure-library-third-party]]
-                 [thheller/shadow-cljs "2.8.95"]
+                 [thheller/shadow-cljs "2.11.23"]
                  [prismatic/schema "1.1.12"]]
 
   :plugins [[lein-shell "0.5.0"]]
