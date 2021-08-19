@@ -30,7 +30,7 @@
   ([index settings mappings]
    (let [json (cond-> {:settings settings}
                       (seq (keys mappings)) (merge {:mappings mappings}))]
-     (elastic-put (elastic-url index) json {:include_type_name false})))
+     (elastic-put (elastic-url index) json)))
   ([index settings]
    (create-index index settings nil)))
 
