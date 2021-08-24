@@ -4,10 +4,10 @@
     [robert.hooke :refer [add-hook]]
     [clojure.java.shell :refer [sh]]))
 
-(def elastic (new ElasticsearchContainer "docker.elastic.co/elasticsearch/elasticsearch:7.10.2"))
+(def elastic (delay (new ElasticsearchContainer "docker.elastic.co/elasticsearch/elasticsearch:7.10.2")))
 
 (defn- stop-elasticsearch []
-  (.stop elastic))
+  (.stop @elastic))
 
 (defn- elastic-has-started? [elastic-ip]
   (let [response (sh "curl" (str elastic-ip "/_cluster/health"))
@@ -23,8 +23,8 @@
 
 (defn- start-elasticsearch []
        (println "Starting elasticsearch container")
-       (.start elastic)
-       (let [port (.getMappedPort elastic 9200)
+       (.start @elastic)
+       (let [port (.getMappedPort @elastic 9200)
              elastic-ip (str "http://127.0.0.1:" port)]
             (wait-elastic-to-start elastic-ip)
             (intern 'clj-elasticsearch.elastic-utils 'elastic-host elastic-ip)
