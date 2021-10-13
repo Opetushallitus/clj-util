@@ -1,4 +1,4 @@
-(defproject oph/clj-elasticsearch "0.3.3-SNAPSHOT"
+(defproject oph/clj-elasticsearch "0.4.0-SNAPSHOT"
             :description "oph clojure elasticsearch utilities"
             :url "http://example.com/FIXME"
             :license {:name "EUPL"
