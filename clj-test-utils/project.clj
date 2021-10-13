@@ -1,4 +1,4 @@
-(defproject oph/clj-test-utils "0.2.9-SNAPSHOT"
+(defproject oph/clj-test-utils "0.3.0-SNAPSHOT"
             :description "oph clojure testing utilities"
             :url "http://example.com/FIXME"
             :license {:name "EUPL"
@@ -9,4 +9,5 @@
                            [com.amazonaws/aws-java-sdk-s3 "1.11.978"]
                            [io.findify/s3mock_2.12 "0.2.6"]
                            [base64-clj "0.1.1"]
+                           [org.testcontainers/elasticsearch "1.15.3"]
                            [robert/hooke "1.3.0"]])

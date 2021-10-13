@@ -1,11 +1,13 @@
 (ns clj-test-utils.elasticsearch-docker-utils
+  (:import org.testcontainers.elasticsearch.ElasticsearchContainer)
   (:require
-    [clj-test-utils.port-finder :refer [find-free-local-port]]
     [robert.hooke :refer [add-hook]]
     [clojure.java.shell :refer [sh]]))
 
+(def elastic (delay (new ElasticsearchContainer "docker.elastic.co/elasticsearch/elasticsearch:7.10.2")))
+
 (defn- stop-elasticsearch []
-  (sh "docker" "kill" "kouta-elastic"))
+  (.stop @elastic))
 
 (defn- elastic-has-started? [elastic-ip]
   (let [response (sh "curl" (str elastic-ip "/_cluster/health"))
@@ -20,13 +22,13 @@
       (recur (- tries 1)))))
 
 (defn- start-elasticsearch []
-  (let [port (find-free-local-port)
-        elastic-ip (str "http://127.0.0.1:" port)
-        elastic-docker-ip (str "127.0.0.1:" port ":9200")]
-    (intern 'clj-elasticsearch.elastic-utils 'elastic-host elastic-ip)
-    (sh "docker" "run" "--rm" "-d" "--name" "kouta-elastic" "--env" "\"discovery.type=single-node\"" "-p" elastic-docker-ip "docker.elastic.co/elasticsearch/elasticsearch:6.8.13")
-    (println "Starting elasticsearch container")
-    (wait-elastic-to-start elastic-ip)))
+       (println "Starting elasticsearch container")
+       (.start @elastic)
+       (let [port (.getMappedPort @elastic 9200)
+             elastic-ip (str "http://127.0.0.1:" port)]
+            (wait-elastic-to-start elastic-ip)
+            (intern 'clj-elasticsearch.elastic-utils 'elastic-host elastic-ip)
+            (println "Elasticsearch container started")))
 
 (defn global-docker-elastic-fixture
   []
