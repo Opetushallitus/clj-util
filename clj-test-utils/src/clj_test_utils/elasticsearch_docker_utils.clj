@@ -6,7 +6,7 @@
 
 (def elastic (delay (new ElasticsearchContainer "docker.elastic.co/elasticsearch/elasticsearch:7.10.2")))
 
-(defn- stop-elasticsearch []
+(defn stop-elasticsearch []
   (.stop @elastic))
 
 (defn- elastic-has-started? [elastic-ip]
@@ -31,12 +31,12 @@
             (println "Elasticsearch container started")))
 
 (defn global-docker-elastic-fixture
-  []
+  [& args]
   (defn- run-tests-hook
     [f & nss]
     (let [embedded-elasticsearch? (find-ns 'clj-elasticsearch.elastic-utils)]
       (when embedded-elasticsearch? (start-elasticsearch))
       (let [result (apply f nss)]
-        (when embedded-elasticsearch? (stop-elasticsearch))
+        (when (and embedded-elasticsearch? (not (:dont-stop-elasticsearch args))) (stop-elasticsearch))
         result)))
   (add-hook #'clojure.test/run-tests #'run-tests-hook))
