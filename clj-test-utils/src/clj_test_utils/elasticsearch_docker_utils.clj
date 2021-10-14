@@ -7,6 +7,7 @@
 (def elastic (delay (new ElasticsearchContainer "docker.elastic.co/elasticsearch/elasticsearch:7.10.2")))
 
 (defn stop-elasticsearch []
+  (println "Stopping elasticsearch container")
   (.stop @elastic))
 
 (defn- elastic-has-started? [elastic-ip]
