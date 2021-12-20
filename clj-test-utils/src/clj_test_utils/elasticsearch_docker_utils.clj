@@ -22,7 +22,7 @@
       (Thread/sleep 1000)
       (recur (- tries 1)))))
 
-(defn- start-elasticsearch []
+(defn start-elasticsearch []
        (println "Starting elasticsearch container")
        (.start @elastic)
        (let [port (.getMappedPort @elastic 9200)
