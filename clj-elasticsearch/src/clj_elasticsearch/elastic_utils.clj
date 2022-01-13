@@ -54,7 +54,7 @@
 
 (defn elastic-delete
   [url]
-  (http/delete url {:content-type :json :body "{}" :socket-timeout timeout}))
+  (http/delete url {:content-type :json :socket-timeout timeout}))
 
 ;MAX request payload size in AWS ElasticSearch
 (defonce max-payload-size 10485760)

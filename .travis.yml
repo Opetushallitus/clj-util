@@ -39,3 +39,10 @@ deploy:
   skip_cleanup: true
   on:
     branch: master
+- provider: script
+  script: >-
+    lein modules do deploy &&
+    ./clj-string-normalizer/bin/cibuild.sh deploy
+  skip_cleanup: true
+  on:
+    branch: OY-3244__custom-elasticsearch
