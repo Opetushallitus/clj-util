@@ -79,3 +79,8 @@
          (map encode)
          (partition-by partitioner)
          (map #(clojure.string/join %)))))
+
+(defn elastic-empty? []
+  (let [url (elastic-url "_all" "_count")
+        count (:count (elastic-get url))]
+    (= count 0)))
