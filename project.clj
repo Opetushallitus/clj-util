@@ -8,11 +8,13 @@
                                                            :username :env/artifactory_username
                                                            :password :env/artifactory_password
                                                            :sign-releases false
+                                                           :checksum :ignore
                                                            :snapshots false}]
                                               ["snapshots" {:url "https://artifactory.opintopolku.fi/artifactory/oph-sade-snapshot-local"
                                                             :username :env/artifactory_username
                                                             :password :env/artifactory_password
                                                             :sign-releases false
+                                                            :checksum :ignore
                                                             :snapshots true}]]
                         :dependencies [[org.clojure/clojure "1.10.3"]
                                        [io.findify/s3mock_2.12 "0.2.6"]
