@@ -5,7 +5,7 @@
     [robert.hooke :refer [add-hook]]
     [clojure.java.shell :refer [sh]]))
 
-(def image (. (. DockerImageName (parse "190073735177.dkr.ecr.eu-west-1.amazonaws.com/utility/elasticsearch-kouta:7.17.2")) asCompatibleSubstituteFor "docker.elastic.co/elasticsearch/elasticsearch"))
+(def image (. (. DockerImageName (parse "190073735177.dkr.ecr.eu-west-1.amazonaws.com/utility/elasticsearch-kouta:7.17.3")) asCompatibleSubstituteFor "docker.elastic.co/elasticsearch/elasticsearch"))
 (def elastic (delay (new ElasticsearchContainer image)))
 
 (defn stop-elasticsearch []
