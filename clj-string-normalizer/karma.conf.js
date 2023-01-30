@@ -2,7 +2,13 @@ process.env.CHROME_BIN = require('puppeteer').executablePath()
 
 module.exports = function (config) {
   config.set({
-    browsers: ['ChromeHeadless'],
+    browsers: ['ChromeWithFlags'],
+    customLaunchers: {
+      ChromeWithFlags: {
+        base: 'ChromeHeadless',
+        flags: ['--disable-gpu', '--disable-software-rasterizer', '--no-sandbox']
+      }
+    },
     basePath: 'target',
     files: ['unit-test.js'],
     frameworks: ['cljs-test'],

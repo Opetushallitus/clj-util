@@ -64,7 +64,7 @@
 
 (defn multi-get
   [index ids & query-params]
-  (->> (elastic-get (elastic-url index "_doc" "_mget") {:ids (vec ids)} (apply array-map query-params) true)
+  (->> (elastic-get (elastic-url index "_mget") {:ids (vec ids)} (apply array-map query-params) true)
        :docs
        (filter :found)
        (map :_source)

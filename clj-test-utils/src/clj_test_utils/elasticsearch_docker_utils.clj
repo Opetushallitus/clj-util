@@ -5,7 +5,7 @@
     [robert.hooke :refer [add-hook]]
     [clojure.java.shell :refer [sh]]))
 
-(def image (. (. DockerImageName (parse "190073735177.dkr.ecr.eu-west-1.amazonaws.com/utility/elasticsearch-kouta:7.17.3")) asCompatibleSubstituteFor "docker.elastic.co/elasticsearch/elasticsearch"))
+(def image (. (. DockerImageName (parse "190073735177.dkr.ecr.eu-west-1.amazonaws.com/utility/elasticsearch-kouta:8.5.2")) asCompatibleSubstituteFor "docker.elastic.co/elasticsearch/elasticsearch"))
 (def elastic (delay (new ElasticsearchContainer image)))
 
 (defn stop-elasticsearch []
@@ -26,6 +26,7 @@
 
 (defn start-elasticsearch []
   (println "Starting elasticsearch container")
+  (.put (.getEnvMap @elastic) "xpack.security.enabled" "false")
   (.start @elastic)
   (let [port (.getMappedPort @elastic 9200)
         elastic-ip (str "http://127.0.0.1:" port)]
