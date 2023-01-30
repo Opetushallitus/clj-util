@@ -41,7 +41,7 @@ jobs:
   deploy:
     needs: ['build']
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/OY-4020__elasticsearch-8'
+    if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v2
       - name: Install clojure tools
