@@ -25,10 +25,8 @@
       (recur (- tries 1)))))
 
 (defn start-elasticsearch []
-  (println (str "ENVMAP: " (.getEnvMap @elastic)))
   (println "Starting elasticsearch container")
   (.put (.getEnvMap @elastic) "xpack.security.enabled" "false")
-  (println (str "ENVMAP: " (.getEnvMap @elastic)))
   (.start @elastic)
   (let [port (.getMappedPort @elastic 9200)
         elastic-ip (str "http://127.0.0.1:" port)]
