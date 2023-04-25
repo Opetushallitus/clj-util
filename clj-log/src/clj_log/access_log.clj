@@ -17,6 +17,7 @@
             :timestamp     (t/now)
             :customer      "OPH"
             :service       service
+            :caller-id     (caller-id-from-request request)
             :responseCode  (response :status)
             :request       (str method " " path-info)
             :requestMethod method

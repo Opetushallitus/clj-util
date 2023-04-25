@@ -1,4 +1,4 @@
-(defproject oph/clj-log "0.3.1-SNAPSHOT"
+(defproject oph/clj-log "0.3.2-SNAPSHOT"
             :description "oph clojure logging utilities"
             :url "http://example.com/FIXME"
             :license {:name "EUPL"

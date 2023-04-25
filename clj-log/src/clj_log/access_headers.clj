@@ -26,6 +26,9 @@
 (defn user-agent-from-request [request]
       ((request :headers) "user-agent"))
 
+(defn caller-id-from-request [request]
+  ((request :headers) "caller-id"))
+
 (defn remote-addr-from-request [request]
       (if-or
         (find-first (request :headers) "x-real-ip" "x-forwarded-for")
