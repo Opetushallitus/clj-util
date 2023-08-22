@@ -26,7 +26,9 @@
 
 (defn start-elasticsearch []
   (println "Starting elasticsearch container")
-  (.put (.getEnvMap @elastic) "xpack.security.enabled" "false")
+  (doto (.getEnvMap @elastic)
+    (.put "xpack.security.enabled" "false")
+    (.put "ES_JAVA_OPTS" "-Xms2g -Xmx2g"))
   (.start @elastic)
   (let [port (.getMappedPort @elastic 9200)
         elastic-ip (str "http://127.0.0.1:" port)]
