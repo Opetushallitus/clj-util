@@ -4,7 +4,7 @@
               [environ.core :refer [env]]
               [clojure.data :refer [diff]]
               [taoensso.timbre.appenders.core :refer [println-appender]]
-              [taoensso.timbre.appenders.3rd-party.rolling :refer [rolling-appender]])
+              [taoensso.timbre.appenders.community.rolling :refer [rolling-appender]])
     (:import [fi.vm.sade.auditlog
               Logger
               Audit

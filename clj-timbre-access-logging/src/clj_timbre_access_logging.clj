@@ -1,7 +1,7 @@
 (ns clj-timbre-access-logging
   (:require [cheshire.core :as json]
             [taoensso.timbre :as timbre]
-            [taoensso.timbre.appenders.3rd-party.rolling :refer [rolling-appender]]))
+            [taoensso.timbre.appenders.community.rolling :refer [rolling-appender]]))
 
 (defn- file-access-log-config
   [path]
