@@ -2,8 +2,6 @@ target
 **/target
 /classes
 /checkouts
-pom.xml
-pom.xml.asc
 *.jar
 *.class
 /.lein-*
@@ -13,3 +11,4 @@ pom.xml.asc
 .idea
 *.iml
 */.lein-*
+.DS_Store
