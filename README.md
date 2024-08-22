@@ -1,10 +1,8 @@
 # clj-util
 
-A Clojure library designed to ... well, that part is up to you.
+clj-util kirjasto on poistettu käytössä eikä enää jatkokehitetä.
 
-## Usage
-
-FIXME
+Suosittelemme tarvittaessa kopioimaan käyttämänne koodin osaksi omaa sovellustanne.
 
 ## License
 
